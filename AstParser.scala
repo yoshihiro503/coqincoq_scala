@@ -25,6 +25,10 @@ class AstParser extends RegexParsers {
     rep1sep(p,q) ^^ {case(x::xs) => (x,xs); case List() =>
       throw new Exception("must not happen")}
 
+  def elem1 : Parser[Char] = elem("elem1", _ => true)
+
+  def comment = "(*" ~> rep (not("*)") ~> elem1) <~ "*)"
+
   def expr : Parser[Expr] = rep1sep_(expr1, white) ^^
     {case (e, es) => es.foldLeft[Expr](e)(APP(_,_))}
 
@@ -94,6 +98,6 @@ class AstParser extends RegexParsers {
     _ <- literal (".")
   } yield {(t, ty)}
 
-  def asts = rep(ast)
+  def asts = repsep(ast, opt(comment))
 
 }
