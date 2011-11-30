@@ -4,5 +4,6 @@ syntax: glob
 
 *.vo
 *.glob
+*.v.d
 
 *.class
