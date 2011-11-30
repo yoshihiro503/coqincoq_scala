@@ -21,20 +21,15 @@ Machine.v
 Ered.v
 ETypes.v
 Equiv.v
-# ML files
-CAML = "$(CAMLOPTC) $(PP)"
--custom "$(CAML) top.ml" "top.ml core.cmx" top.cmx
--custom "$(CAMLOPTC) core.mli" "core.ml" core.cmi
--custom "$(CAMLOPTC) core.ml" "core.cmi" core.cmx
 # COQE is used for building core.ml : we do not want an Extract.vo
 # to be produced
 COQE = "$(COQBIN)coqtop $(COQLIBS) $(COQFLAGS) -batch -load-vernac-source"
--custom "$(COQE) Extract.v" Machine.vo core.ml
+-custom "$(COQE) Extract.v" Machine.vo Core.scala
 # building coc
--custom "$(CAMLOPTLINK) -o $@ core.cmx top.cmx" "core.cmx top.cmx" coc
+-custom "scalac Core.scala AstParser.scala Top.scala" Core.scala Top.class
 # the test :
 -custom
-       "@echo '***** test: checking the proof of the Newman lemma *****'
-	./coc < newman.coc
+        "@echo '***** test: checking the proof of the Newman lemma *****'
+	scala Top < newman.coc
 	@echo '******************** End of test ***********************'"
-  "" test
+   "" test
