@@ -7,6 +7,16 @@ Author  : Yoshihiro Imai
 E-mail  : y.imai@ocaml.jp 
 Twitter : @yoshihiro
 
+
+Requirement
+-----------
+
+  * Scala-2.9.1.final (http://scala-lang.org/)
+
+  * coq2scala (http://proofcafe.org/wiki/Coq2Scala)
+
+
+
 Installation procedure:
 -----------------------
 
