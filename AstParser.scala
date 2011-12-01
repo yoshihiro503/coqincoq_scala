@@ -1,8 +1,9 @@
 import scala.util.parsing.combinator._
+import scala.util.parsing.input._
 
 import CoqMain.{REF,APP,ABS,PROD,SRT, Expr}
 import CoqMain.{Prop,Set,Kind, Sort}
-import CoqMain.{AST_AXIOM, AST_CHECK, Ast}
+import CoqMain.{AST_INFER, AST_AXIOM, AST_CHECK, AST_DELETE, AST_LIST, AST_QUIT, Ast}
 
 class AstParser extends RegexParsers {
   override def skipWhitespace = true
@@ -79,15 +80,24 @@ class AstParser extends RegexParsers {
 
 
   def ast : Parser[Ast] =
+    comment ~> ast |
+    infer ^^ {case e => AST_INFER(e)} |
     axiom ^^ {case (x, ty) => AST_AXIOM(x, ty)} |
-    check ^^ {case (t, ty) => AST_CHECK(t, ty)}
+    check ^^ {case (t, ty) => AST_CHECK(t, ty)} |
+    "Delete" ^^ (_ => AST_DELETE()) |
+    "List" ^^ (_ => AST_LIST()) |
+    "Quit" ^^ (_ => AST_QUIT())
+
+  def infer : Parser[Expr] = for {
+    _ <- literal("Infer") <~ opt(white)
+    e <- expr
+  } yield e
 
   def axiom : Parser[(String, Expr)] = for {
     _ <- literal("Axiom") <~ opt(white)
     x <- ident
     _ <- literal (":") <~ opt(white)
     ty <- expr
-    _ <- literal (".")
   } yield {(x, ty)}
 
   def check : Parser[(Expr, Expr)] = for {
@@ -95,9 +105,12 @@ class AstParser extends RegexParsers {
     t <- expr
     _ <- literal(":") <~ opt(white)
     ty <- expr
-    _ <- literal (".")
   } yield {(t, ty)}
 
   def asts = repsep(ast, opt(comment))
 
+  def parseAst(src : String) = {
+    val reader = new CharSequenceReader(src)
+    ast(reader)
+  }
 }

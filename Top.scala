@@ -148,10 +148,18 @@ object Top {
   }
 
 
-  def parse(src : Source) = {
+  def parse(src : Source) : Iterator[Ast] = {
+    import scala.collection.immutable._
     import scala.util.parsing.input._
-    val reader = new CharSequenceReader(src.mkString)
-    (new AstParser).asts(reader).get
+    var src2 = src.takeWhile(_.toByte != 4)
+    def split[A](x : A, xs : Iterator[A]) : Iterator[List[A]] =
+      Iterator.continually(xs.takeWhile(_ != x).toList).takeWhile(_ != Nil)
+    val p = new AstParser
+    split('.', src2).map(cmd => p.parseAst(cmd.mkString)).filter {
+      case p.Success(_, _) => true
+      case p.NoSuccess(msg, next) if next.atEnd => false
+      case p.NoSuccess(msg, next) => println(msg); false
+    }.map(_.get)
   }
 
   def go () = {
