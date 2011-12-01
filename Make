@@ -26,7 +26,7 @@ Equiv.v
 COQE = "$(COQBIN)coqtop $(COQLIBS) $(COQFLAGS) -batch -load-vernac-source"
 -custom "$(COQE) Extract.v" Machine.vo Core.scala
 # building coc
--custom "scalac Core.scala AstParser.scala Top.scala" Core.scala Top.class
+-custom "scalac Core.scala AstParser.scala Top.scala" "AstParser.scala Core.scala Top.scala" Top.class
 # the test :
 -custom
         "@echo '***** test: checking the proof of the Newman lemma *****'

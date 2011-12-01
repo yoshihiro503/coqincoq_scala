@@ -165,7 +165,7 @@ all-gal.pdf: $(VFILES)
 Core.scala: Machine.vo
 	$(COQE) Extract.v
 
-Top.class: Core.scala
+Top.class: AstParser.scala Core.scala Top.scala
 	scalac Core.scala AstParser.scala Top.scala
 
 test: 
