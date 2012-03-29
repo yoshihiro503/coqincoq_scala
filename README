@@ -2,10 +2,11 @@
                           ====================
 
 
-Author  : Yoshihiro Imai
-        
-E-mail  : y.imai@ocaml.jp 
-Twitter : @yoshihiro
+Overview
+--------
+
+  This is Scala version of CoqInCoq (http://coq.inria.fr/pylons/contribs/view/CoqInCoq/v8.3)
+
 
 
 Requirement
@@ -13,7 +14,7 @@ Requirement
 
   * Scala-2.9.1.final (http://scala-lang.org/)
 
-  * coq2scala (http://proofcafe.org/wiki/Coq2Scala)
+  * coq2scala (http://proofcafe.org/wiki/en/Coq2Scala)
 
 
 
@@ -23,4 +24,15 @@ Installation procedure:
   To get this contribution compiled, type
 
     make 
+
+
+
+Author
+------
+
+   Yoshihiro Imai
+        
+E-mail  : y.imai@ocaml.jp 
+Twitter : http://twitter.com/yoshihiro503
+
 
